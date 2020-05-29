@@ -1,0 +1,16 @@
+.editAreaWapper
+{
+    background-color: #edeef1;
+    z-index: 2;
+    position: absolute;
+    top: 30%;
+    left: 30%;
+    right: 30%;
+}
+
+
+.listContentArea
+{
+    overflow-y: auto;
+    height: 500px;
+}

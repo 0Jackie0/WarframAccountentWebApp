@@ -1,0 +1,43 @@
+.topArea
+{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+.topArea img
+{
+    width: 150px;
+    height: 150px;
+}
+
+.nameQuantityArea
+{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.midArea
+{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.bottomArea
+{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.saveCancleArea
+{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
