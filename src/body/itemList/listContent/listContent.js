@@ -10,7 +10,7 @@ const ListContent = (props) =>
         <div className="itemAreaUp">
             <div className="itemArea" onClick={() => {props.openEdit(props.item)}}>
                 <div className="imageArea">
-                    <img src={itemImage} alt="item" />
+                    <img src={ props.item.imageString !== "" ? "data:image/png;base64," + props.item.imageString : itemImage} alt="item" />
                 </div>
 
                 <div className="itemInfoArea">

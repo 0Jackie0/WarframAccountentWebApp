@@ -137,6 +137,7 @@ class ItemList extends Component
     addNewItem = () =>
     {
         let tempNewItem = {
+            imageString: "",
             bprice: 0,
             eprice: 0,
             itemId: -1,

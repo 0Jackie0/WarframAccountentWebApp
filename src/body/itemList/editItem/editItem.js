@@ -9,8 +9,12 @@ class EditItem extends Component
         super();
 
         this.state = {
-            target: props.target
+            target: props.target,
         }
+        this.imageInput = React.createRef();
+        this.imageView = React.createRef();
+
+        this.changeImage = this.changeImage.bind(this)
     }
 
     changeName = (event) =>
@@ -87,13 +91,59 @@ class EditItem extends Component
         );
     }
 
+    changeImage = () =>
+    {
+        this.imageInput.click();
+    }
+
+    fileChange = (event) =>
+    {
+        event.stopPropagation();
+        event.preventDefault();
+        
+        if (event.target.files[0])
+        {
+            const promise = new Promise((resolve, reject) => {
+                const reader = new FileReader()
+            
+                reader.readAsDataURL(event.target.files[0])
+            
+                reader.onload = () => {
+                if (!!reader.result) {
+                    resolve(reader.result)
+                }
+                else {
+                    reject(Error("Failed converting to base64"))
+                }
+                }
+            
+            })
+            promise.then(result => {
+                const targetCopy = {...this.state.target}
+                targetCopy.imageString = result.split(",")[1];
+
+                this.setState(
+                    {
+                        target: targetCopy,
+                    }
+                );
+            }, 
+            err => {
+                console.log(err)
+            })
+        }
+        
+    }
+
     render()
     {
         return (
             <div className="editArea">
                 <div className="topArea">
-                    <img src={itemImage} alt="Item"/>
-    
+                    <input type="file" ref={imageInput => this.imageInput = imageInput} accept=".jpg, .png" multiple={false} onChange={(event) => {this.fileChange(event)}} style={{display: "none"}}/>
+                    <img src={this.state.target.imageString !== "" ? "data:image/png;base64," + this.state.target.imageString : itemImage} ref={imageView => this.imageView = imageView} onClick={() => {this.changeImage()}} alt="Item"/>
+                    {/* <img src={this.state.imageDisplay !== "" ? this.state.imageDisplay : itemImage} ref={imageView => this.imageView = imageView} onClick={() => {this.changeImage()}} alt="Item"/> */}
+
                     <div className="nameQuantityArea">
                         <span>Item name:</span>
                         <input type="text" value={this.state.target.name} onChange={(event) => {this.changeName(event)}}/>
