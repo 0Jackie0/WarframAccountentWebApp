@@ -15,8 +15,13 @@ const ListHeader = (props) =>
 
     return (
         <div className="contentArea">
-            <span>Total Quantity: {totalQuantity}</span>
-            <span>Total Price: {totalPrice}</span>
+            <span>
+                <span className="tagStyle">Total Quantity: </span>{totalQuantity}
+            </span>
+            <span>
+                <span className="tagStyle">Total Price: </span>{totalPrice}
+            </span>
+            
         </div>
     );
 }

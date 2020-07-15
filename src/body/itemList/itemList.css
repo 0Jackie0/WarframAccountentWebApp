@@ -1,16 +1,48 @@
-.editAreaWapper
+
+
+.itemListPageArea
 {
-    background-color: #edeef1;
-    z-index: 2;
-    position: absolute;
-    top: 30%;
-    left: 30%;
-    right: 30%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
 }
 
+.itemManagementArea
+{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 25px;
+}
+
+.itemManagementContent
+{
+    display:inline-block;
+    width: 49%;
+}
+
+.editAreaWapper
+{
+    height: 615px;
+
+    background-color: #d3eaf7;
+    
+    border-style: dotted;
+    border-color: #67abd6dc;
+    border-width: 3px;
+}
+
+.listInfoArea
+{
+    background-color: #d3eaf7;
+    
+    border-style: dotted;
+    border-color: #67abd6dc;
+    border-width: 3px;
+}
 
 .listContentArea
 {
     overflow-y: auto;
-    height: 500px;
+    height: 580px;
 }

@@ -1,0 +1,50 @@
+.listSelectionArea
+{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.searchArea
+{
+    text-align: center;
+    width: 49%;
+
+    margin-bottom: 10px;
+}
+
+input[type="text"]
+{
+    font-size: 20px;
+}
+
+.dropdownArea
+{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+
+
+    width: 49%;
+}
+
+.dropdownStyle
+{
+    font-family: 'Orbitron', sans-serif;
+    font-size: 20px;
+}
+.dropdownStyle#fixed {
+    -webkit-appearance: none;
+}
+
+.filterSelectionArea
+{
+    display: inline-block;
+    width: 50%;;
+}
+
+.orderSelectionArea
+{
+    display: inline-block;
+    width: 50%;;
+}

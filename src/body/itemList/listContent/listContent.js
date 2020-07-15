@@ -14,10 +14,21 @@ const ListContent = (props) =>
                 </div>
 
                 <div className="itemInfoArea">
-                    <span>Item Name: {props.item.name}</span>
-                    <span>Quantity: {props.item.quantity}</span>
-                    <span>Base Price: {props.item.bprice}</span>
-                    <span>Expected Price: {props.item.eprice}</span>
+                    <span>
+                        <span className="tagStyle">Item Name: </span>{props.item.name}
+                    </span>
+
+                    <span>
+                        <span className="tagStyle">Quantity: </span>{props.item.quantity}
+                    </span>
+
+                    <span>
+                        <span className="tagStyle">Base Price: </span>{props.item.bprice}
+                    </span>
+
+                    <span>
+                        <span className="tagStyle">Expected Price: </span>{props.item.eprice}
+                    </span>
                 </div>
             </div>
             <div className="itemFunctionArea">

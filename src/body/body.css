@@ -1,5 +1,13 @@
+.tagStyle
+{
+    font-family: 'Lexend Deca', sans-serif;
+}
+
 .mainBody
 {
     margin: 0 auto;
-    width: 80%;
+    width: 95%;
+    margin-top: 20px;
+    font-family: 'Raleway', sans-serif;
+    font-size: 20px;
 }

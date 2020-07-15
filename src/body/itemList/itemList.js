@@ -28,7 +28,7 @@ class ItemList extends Component
             itemType: [],
             itemListCopy: null,
             editTarget: null,
-            addNew: false,
+            addNew: true,
             filterId: "-1",
             orderId: "1"
         }
@@ -70,7 +70,16 @@ class ItemList extends Component
         {
             this.setState(
                 {
-                    itemType: newTypeList.data
+                    itemType: newTypeList.data,
+                    editTarget: {
+                        imageString: "",
+                        bprice: 0,
+                        eprice: 0,
+                        itemId: -1,
+                        name: "",
+                        quantity: 0,
+                        type: newTypeList.data[0].typeId,
+                    },
                 }
             )
         })
@@ -108,7 +117,7 @@ class ItemList extends Component
 
             for(let index in newItemListCopy)
             {
-                if(newItemListCopy[index].name.includes(searchName) === true)
+                if(newItemListCopy[index].name.toLowerCase().includes(searchName.toLowerCase()) === true)
                 {
                     newItemList.push(newItemListCopy[index])
                 }
@@ -269,6 +278,60 @@ class ItemList extends Component
             }
         }
     }
+    getNewFilterList = () =>
+    {
+        const serverCommunication = new ServerCommunication();
+
+        if(this.state.orderId === "1")
+        {
+            if(this.state.filterId === "-1")
+            {
+                serverCommunication.itemCommunication().getAllItemName().then(newItemList =>
+                    {
+                        this.setState(
+                            {
+                                itemList: newItemList.data
+                            }
+                        )
+                })
+            }
+            else
+            {
+                serverCommunication.itemCommunication().getFilterNameItemList(this.state.filterId).then(newItemList =>{
+                    this.setState(
+                        {
+                            itemList: newItemList.data
+                        }
+                    )
+                })
+            }
+            
+        }
+        else
+        {
+            if(this.state.filterId === "-1")
+            {
+                serverCommunication.itemCommunication().getAllItemQuantity().then(newItemList =>
+                    {
+                        this.setState(
+                            {
+                                itemList: newItemList.data
+                            }
+                        )
+                })
+            }
+            else
+            {
+                serverCommunication.itemCommunication().getFilterQuantityItemList(this.state.filterId).then(newItemList =>{
+                    this.setState(
+                        {
+                            itemList: newItemList.data
+                        }
+                    )
+                })
+            }
+        }
+    }
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -284,9 +347,9 @@ class ItemList extends Component
 
                 for(let itemIndex in tempItemList.itemList)
                 {
-                    if(tempItemList.itemList[itemIndex].itemId === updatedItem.data.itemId)
+                    if(tempItemList.itemList[itemIndex].itemId === itemId)
                     {
-                        tempItemList.itemList[itemIndex].quantity = updatedItem.data.quantity
+                        tempItemList.itemList[itemIndex].quantity += 1;
                         break;
                     }
                 }
@@ -304,9 +367,9 @@ class ItemList extends Component
             
             for(let itemIndex in tempItemList.itemList)
             {
-                if(tempItemList.itemList[itemIndex].itemId === updatedItem.data.itemId)
+                if(tempItemList.itemList[itemIndex].itemId === itemId)
                 {
-                    tempItemList.itemList[itemIndex].quantity = updatedItem.data.quantity
+                    tempItemList.itemList[itemIndex].quantity += -1;
                     break;
                 }
             }
@@ -330,8 +393,16 @@ class ItemList extends Component
     {
         this.setState(
             {
-                editTarget: null,
-                addNew: false
+                editTarget: {
+                    imageString: "",
+                    bprice: 0,
+                    eprice: 0,
+                    itemId: -1,
+                    name: "",
+                    quantity: 0,
+                    type: this.state.itemType[0].typeId,
+                },
+                addNew: true
             }
         )
     }
@@ -345,12 +416,20 @@ class ItemList extends Component
                 {
                     this.setState(
                         {
-                            editTarget: null,
-                            addNew: false
+                            editTarget: {
+                                imageString: "",
+                                bprice: 0,
+                                eprice: 0,
+                                itemId: -1,
+                                name: "",
+                                quantity: 0,
+                                type: this.state.itemType[0].typeId,
+                            },
+                            addNew: true
                         }
                     );
     
-                    this.getItemList();
+                    this.getNewFilterList();
                 })
                 .catch(exception => {
                     console.log(exception)
@@ -362,18 +441,25 @@ class ItemList extends Component
                 {
                     this.setState(
                         {
-                            editTarget: null,
-                            addNew: false
+                            editTarget: {
+                                imageString: "",
+                                bprice: 0,
+                                eprice: 0,
+                                itemId: -1,
+                                name: "",
+                                quantity: 0,
+                                type: this.state.itemType[0].typeId,
+                            },
+                            addNew: true
                         }
                     );
     
-                    this.getItemList();
+                    this.getNewFilterList();
                 })
                 .catch(exception => {
                     console.log(exception)
                 })
         }
-        
     }
     deleteEdit = (targetId) =>
     {
@@ -383,37 +469,59 @@ class ItemList extends Component
             {
                 this.setState(
                     {
-                        editTarget: null
+                        editTarget: {
+                            imageString: "",
+                            bprice: 0,
+                            eprice: 0,
+                            itemId: -1,
+                            name: "",
+                            quantity: 0,
+                            type: this.state.itemType[0].typeId,
+                        },
+                        addNew: true
                     }
                 );
 
                 this.getItemList();
             })
             .catch(exception =>
-                {
-                    console.log(exception)
-                })
+            {
+                console.log(exception)
+            })
     }
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     render()
     {
         return (
-            <div>
+            <div className="itemListPageArea">
                 <div className="selectionArea">
                     <ListSelection filterList={this.state.itemType} orderList={orderList} searchFunction={this.searchItem} addFunction={this.addNewItem} filterFunction={this.filterItemList} orderFunction={this.orderItemList}/>
                 </div>
-                
-                <div className="editAreaWapper">
-                    {this.state.editTarget !== null ?  <EditItem isAddNew={this.state.addNew} target={this.state.editTarget} typeList={this.state.itemType} saveFunction={this.saveEdit} deleteFunction={this.deleteEdit} cancleFunction={this.cancleEdit} /> : null}
-                </div>
 
-                <div className="listHeaderArea">
-                    <ListHeader itemList={this.state.itemList}/>
-                </div>
 
-                <div className="listContentArea">
-                    {this.state.itemList.map(item => <ListContent key={item.itemId} item={item} addFunction={this.addOneItem} removeFunction={this.removeOneItem} openEdit={this.openEdit} />)}
+                <div className="itemManagementArea">
+                    <div className="itemManagementContent">
+                        {this.state.editTarget !== null ?  
+                            <div className="editAreaWapper">
+                                <EditItem isAddNew={this.state.addNew} target={this.state.editTarget} typeList={this.state.itemType} saveFunction={this.saveEdit} deleteFunction={this.deleteEdit} cancleFunction={this.cancleEdit} />
+                            </div>
+                            :
+                            null
+                        }
+                    </div>
+
+                    <div className="itemManagementContent">
+                        <div className="listInfoArea">
+                            <div className="listHeaderArea">
+                                <ListHeader itemList={this.state.itemList}/>
+                            </div>
+
+                            <div className="listContentArea">
+                                {this.state.itemList.map(item => <ListContent key={item.itemId} item={item} addFunction={this.addOneItem} removeFunction={this.removeOneItem} openEdit={this.openEdit} />)}
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         )
