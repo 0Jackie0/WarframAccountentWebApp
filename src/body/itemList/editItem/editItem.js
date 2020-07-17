@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import "./editItem.css"
 import itemImage from "../../../drawable/220px-Warframe_Cover_Art.png"
 
+const MAX_FILE_SIZE = 2 * 1024 * 1024;
+
 class EditItem extends Component
 {
     constructor(props)
@@ -143,39 +145,47 @@ class EditItem extends Component
     {
         event.stopPropagation();
         event.preventDefault();
-        
+
         if (event.target.files[0])
         {
-            const promise = new Promise((resolve, reject) => {
-                const reader = new FileReader()
-            
-                reader.readAsDataURL(event.target.files[0])
-            
-                reader.onload = () => {
-                if (!!reader.result) {
-                    resolve(reader.result)
-                }
-                else {
-                    reject(Error("Failed converting to base64"))
-                }
-                }
-            
-            })
-            promise.then(result => {
-                const targetCopy = {...this.state.target}
-                targetCopy.imageString = result.split(",")[1];
-
-                this.setState(
-                    {
-                        target: targetCopy,
+            if (event.target.files[0].size > MAX_FILE_SIZE)
+            {
+                alert("The image has to be smaller than 2M");
+            }
+            else
+            {
+                const promise = new Promise((resolve, reject) => {
+                    const reader = new FileReader()
+                
+                    reader.readAsDataURL(event.target.files[0])
+                
+                    reader.onload = () => {
+                    if (!!reader.result) {
+                        resolve(reader.result)
                     }
-                );
-            }, 
-            err => {
-                console.log(err)
-            })
+                    else {
+                        reject(Error("Failed converting to base64"))
+                    }
+                    }
+                
+                });
+
+                promise.then(result => {
+                    const targetCopy = {...this.state.target};
+
+                    targetCopy.imageString = result.split(",")[1];
+    
+                    this.setState(
+                        {
+                            target: targetCopy
+                        }
+                    );
+                }, 
+                err => {
+                    console.log(err)
+                })
+            }
         }
-        
     }
 
     render()
